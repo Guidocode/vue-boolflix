@@ -38,7 +38,7 @@ export default {
 },
 
   mounted(){
-    this.getApi();
+    
   },
 
   data(){
@@ -47,10 +47,9 @@ export default {
       apiParams: {
         api_key: '331c13478db6d90df46ce36b05f18e36',
         language: 'it-IT',
-        query: 'harry potter'
+        query: ''
       },
       arrayMovies: [],
-      movieSearchedString: ''
     }
   },
 
@@ -70,8 +69,19 @@ export default {
   },
 
   movieSearched(inputRicercaFilm){
-    if(this.arrayMovies.includes(inputRicercaFilm.toLowerCase())) this.movieSearchedString = inputRicercaFilm.toLowerCase();
-  }
+    this.apiParams.query += inputRicercaFilm.toLowerCase();
+    this.getApi();
+  },
+
+  // computed:{
+  //   getMoviesSearched(){
+  //     let moviesSearched = [];
+
+
+
+  //     return moviesSearched;
+  //   }
+  // }
 }
 </script>
 
