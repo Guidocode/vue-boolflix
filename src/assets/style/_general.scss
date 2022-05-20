@@ -1,1 +1,8 @@
-@import '~bootstrap/scss/bootstrap.scss'
+@import '~bootstrap/scss/bootstrap.scss';
+
+.gb-container{
+  width: 90%;
+  margin: 0 auto;
+  max-width: 1800px;
+}
+

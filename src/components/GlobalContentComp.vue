@@ -1,37 +1,63 @@
 <template>
-  <div class="global-content">
+  <div class="global-content d-flex flex-column">
 
-    <!-- Content Top -->
-    <div class="content-top d-flex justify-content-between align-items-center px-3">
+    <!-- CONTENT TOP -->
+    <!-- <div class="content-top container-fluid">
+      <div class="row">
+        <div class="col-12 col-sm-3">
+          <div class="logo my-1">B o o l f l i x</div>
+        </div>
+        <div class="col-12 col-sm-9">
+          <div class="searchbars d-flex justify-content-end">
+            <SeachbarComp
+            @search="movieSearched"
+            />
+            
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="content-top d-flex justify-content-between align-items-center flex-wrap px-3">
 
       <div class="logo">B o o l f l i x</div>
 
-      <div class="searchbars">
+      <div class="searchbars d-flex flex-wrap flex-md-nowrap">
         <SeachbarComp 
         @search="movieSearched"
         />
+        
+        <!-- Seconda searchbar -->
+        
       </div>
 
     </div>
-    <!-- /Content Top -->
+    <!-- /CONTENT TOP -->
 
 
 
-    <!-- Content Bottom -->
-    
-    <div class="content-bottom">
-      <div v-if="!isError">
+    <!-- CONTENT BOTTOM -->
+    <div class="content-bottom h-100">
+      <div v-if="!isError" class="h-100">
+        <div v-if="!isLoading" class="gb-container h-100 py-5">
+          <div class="container-fluid">
+            <!-- <div class="title-content">Movies</div> -->
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
 
-        <MoviesComp 
-        v-for="movieItem in arrayMovies" :key="movieItem.id"
-        :movie="movieItem"
-        />
+              <MoviesComp 
+              v-for="movieItem in arrayMovies" :key="movieItem.id"
+              :movie="movieItem"
+              />
 
+            </div>
+          </div>
+        </div>
+      
+        <LoadingComp v-else />
       </div>
 
-    <div v-else class="text-center py-5">{{errorMessage}}</div>
+      <div v-else class="text-center py-5">{{errorMessage}}</div>
     </div>
-    <!-- /Content Bottom -->
+    <!-- /CONTENT BOTTOM -->
 
   </div>
 </template>
@@ -40,12 +66,14 @@
 import SeachbarComp from './SeachbarComp.vue';
 import axios from 'axios';
 import MoviesComp from './MoviesComp.vue';
+import LoadingComp from './LoadingComp.vue';
 export default {
   name: "GlobalContentComp",
   components: {
     SeachbarComp,
-    MoviesComp
-  },
+    MoviesComp,
+    LoadingComp
+},
 
   mounted(){
     
@@ -53,7 +81,7 @@ export default {
 
   data(){
     return{
-      apiUrl: 'https://api.themoviedb.org/3/search/moviex',
+      apiUrl: 'https://api.themoviedb.org/3/search/movie',
       apiParams: {
         api_key: '331c13478db6d90df46ce36b05f18e36',
         language: 'it-IT',
@@ -63,6 +91,8 @@ export default {
 
       errorMessage: '',
       isError: false,
+
+      isLoading: null
     }
   },
 
@@ -74,6 +104,7 @@ export default {
       .then(resp => {
         console.log(resp.data);
         this.arrayMovies = resp.data.results;
+        this.isLoading = false;
       })
       .catch(error => {
         this.errorMessage = error;
@@ -85,6 +116,7 @@ export default {
     movieSearched(inputRicercaFilm){
       this.apiParams.query = inputRicercaFilm.toLowerCase();
       this.getApi();
+      this.isLoading = true
       console.log( 'sto cercando il film', this.apiParams.query );
     },
   },
@@ -96,9 +128,9 @@ export default {
 
 <style lang="scss" scoped>
 .global-content{
-  min-height: 100vh;
-  background-color: #212323;
+  height: 100vh;
   color: white;
+  
 
   .content-top{
     min-height: 60px;
@@ -107,16 +139,32 @@ export default {
     top: 0;
     left: 0;
     width: 100%;
+    z-index: 999;
 
     .logo{
       color: #DB202C;
       font-size: 2rem;
+      font-weight: 600;
+      text-transform: uppercase;
     }
   }
 
   .content-bottom{
+    background-color: #212323;
+    flex-grow: 1;
     margin-top: 60px;
     overflow-y: scroll;
+
+    .title-content{
+    display: inline-block;
+    text-transform: uppercase;
+    color: white;
+    background-color: rgba(61, 61, 246, 0.525);
+    padding: 5px 10px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    }
+
   }
 
 }
