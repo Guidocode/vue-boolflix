@@ -7,7 +7,9 @@
       <div class="logo">B o o l f l i x</div>
 
       <div class="searchbars">
-        <SeachbarComp />
+        <SeachbarComp 
+        @search="movieSearched"
+        />
       </div>
 
     </div>
@@ -19,7 +21,6 @@
     <MoviesComp 
     v-for="movieItem in arrayMovies" :key="movieItem.id"
     :movie="movieItem"
-    @search="movieSearched"
     />
     <!-- /Content Bottom -->
 
@@ -71,6 +72,7 @@ export default {
   movieSearched(inputRicercaFilm){
     this.apiParams.query += inputRicercaFilm.toLowerCase();
     this.getApi();
+    console.log('sto cercando il film');
   },
 
   // computed:{
