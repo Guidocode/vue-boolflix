@@ -18,10 +18,19 @@
 
 
     <!-- Content Bottom -->
-    <MoviesComp 
-    v-for="movieItem in arrayMovies" :key="movieItem.id"
-    :movie="movieItem"
-    />
+    
+    <div class="content-bottom">
+      <div v-if="!isError">
+
+        <MoviesComp 
+        v-for="movieItem in arrayMovies" :key="movieItem.id"
+        :movie="movieItem"
+        />
+
+      </div>
+
+    <div v-else class="text-center py-5">{{errorMessage}}</div>
+    </div>
     <!-- /Content Bottom -->
 
   </div>
@@ -44,13 +53,16 @@ export default {
 
   data(){
     return{
-      apiUrl: 'https://api.themoviedb.org/3/search/movie',
+      apiUrl: 'https://api.themoviedb.org/3/search/moviex',
       apiParams: {
         api_key: '331c13478db6d90df46ce36b05f18e36',
         language: 'it-IT',
         query: ''
       },
       arrayMovies: [],
+
+      errorMessage: '',
+      isError: false,
     }
   },
 
@@ -64,7 +76,9 @@ export default {
         this.arrayMovies = resp.data.results;
       })
       .catch(error => {
-        console.log(error);
+        this.errorMessage = error;
+        this.isError = true;
+        console.log(this.errorMessage);
       })
     },
 
@@ -89,11 +103,21 @@ export default {
   .content-top{
     min-height: 60px;
     background-image: linear-gradient(#1a2727, #2b3f3f);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
 
     .logo{
       color: #DB202C;
       font-size: 2rem;
     }
   }
+
+  .content-bottom{
+    margin-top: 60px;
+    overflow-y: scroll;
+  }
+
 }
 </style>
