@@ -36,7 +36,7 @@ export default {
   components: {
     SeachbarComp,
     MoviesComp
-},
+  },
 
   mounted(){
     
@@ -66,24 +66,17 @@ export default {
       .catch(error => {
         console.log(error);
       })
-    }
+    },
+
+    movieSearched(inputRicercaFilm){
+      this.apiParams.query = inputRicercaFilm.toLowerCase();
+      this.getApi();
+      console.log( 'sto cercando il film', this.apiParams.query );
+    },
   },
 
-  movieSearched(inputRicercaFilm){
-    this.apiParams.query += inputRicercaFilm.toLowerCase();
-    this.getApi();
-    console.log('sto cercando il film');
-  },
+  
 
-  // computed:{
-  //   getMoviesSearched(){
-  //     let moviesSearched = [];
-
-
-
-  //     return moviesSearched;
-  //   }
-  // }
 }
 </script>
 
