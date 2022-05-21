@@ -2,21 +2,6 @@
   <div class="global-content d-flex flex-column">
 
     <!-- CONTENT TOP -->
-    <!-- <div class="content-top container-fluid">
-      <div class="row">
-        <div class="col-12 col-sm-3">
-          <div class="logo my-1">B o o l f l i x</div>
-        </div>
-        <div class="col-12 col-sm-9">
-          <div class="searchbars d-flex justify-content-end">
-            <SeachbarComp
-            @search="movieSearched"
-            />
-            
-          </div>
-        </div>
-      </div>
-    </div> -->
     <div class="content-top d-flex justify-content-between align-items-center flex-wrap px-3">
 
       <div class="logo">B o o l f l i x</div>
@@ -37,8 +22,19 @@
 
     <!-- CONTENT BOTTOM -->
     <div class="content-bottom h-100">
+
+      <!-- Se non c'è nessun errore vado avanti -->
       <div v-if="!isError" class="h-100">
+
+        <!-- A fine caricamento stampo il contenuto se viene trovato -->
         <div v-if="!isLoading" class="gb-container h-100 py-5">
+
+        <!-- Messaggio iniziale 'fai la richerca' -->
+        <h2 :class="isBlock ? 'd-block' : 'd-none'" class="text-center py-5">{{initMessage}}</h2>
+
+        <!-- Messaggio stampato se la ricerca non produce risultati -->
+        <h2 :class="isNotFound ? 'd-block' : 'd-none'" class="text-center py-5">{{contentNotFound}}</h2>
+
           <div class="container-fluid">
             <!-- <div class="title-content">Movies</div> -->
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
@@ -52,9 +48,11 @@
           </div>
         </div>
       
+        <!-- Caricamento mentre avviene la ricerca -->
         <LoadingComp v-else />
       </div>
 
+      <!-- Messaggio stampato in caso di errore API -->
       <div v-else class="text-center py-5">{{errorMessage}}</div>
     </div>
     <!-- /CONTENT BOTTOM -->
@@ -92,7 +90,13 @@ export default {
       errorMessage: '',
       isError: false,
 
-      isLoading: null
+      isLoading: null,
+
+      initMessage: 'SCEGLI COSA GUARDARE! FAI LA TUA RICERCA!',
+      isBlock: true,
+
+      contentNotFound: 'LA TUA RICERCA NON HA PRODOTTO NESSUN RISULTATO...',
+      isNotFound: false
     }
   },
 
@@ -105,6 +109,7 @@ export default {
         console.log(resp.data);
         this.arrayMovies = resp.data.results;
         this.isLoading = false;
+        if(this.arrayMovies.length < 1) this.isNotFound = true;
       })
       .catch(error => {
         this.errorMessage = error;
@@ -116,7 +121,8 @@ export default {
     movieSearched(inputRicercaFilm){
       this.apiParams.query = inputRicercaFilm.toLowerCase();
       this.getApi();
-      this.isLoading = true
+      this.isBlock = false;
+      this.isLoading = true;
       console.log( 'sto cercando il film', this.apiParams.query );
     },
   },
@@ -130,6 +136,7 @@ export default {
 .global-content{
   height: 100vh;
   color: white;
+  font-family: "Roboto";
   
 
   .content-top{
