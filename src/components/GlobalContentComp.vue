@@ -71,7 +71,7 @@ export default {
     SeachbarComp,
     MoviesComp,
     LoadingComp
-},
+  },
 
   mounted(){
     
