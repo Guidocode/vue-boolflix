@@ -28,32 +28,35 @@
         <!-- A fine caricamento stampo il contenuto se viene trovato -->
         <div v-if="!isLoading" class="gb-container h-100 py-5">
 
-        <!-- Messaggio iniziale 'fai la richerca' -->
-        <h2 :class="isBlock ? 'd-block' : 'd-none'" class="text-center py-5">{{initMessage}}</h2>
+          <!-- Messaggio iniziale 'fai la richerca' -->
+          <h2 :class="isBlock ? 'd-block' : 'd-none'" class="text-center py-5">{{initMessage}}</h2>
 
-        <!-- Messaggio stampato se la ricerca non produce risultati -->
-        <h2 :class="isNotFound ? 'd-block' : 'd-none'" class="text-center py-5">{{contentNotFound}}</h2>
+          
 
           <div class="container-fluid">
             <!-- Movies -->
-            <div class="title-content">Movies</div>
+            <div :class="isBlock ? 'd-none' : 'd-inline-block'" class="title-content">Movies</div>
+            <!-- Messaggio stampato se la ricerca non produce risultati -->
+            <h2 :class="isMoviesNotFound ? 'd-block' : 'd-none'" class="text-center py-5">{{moviesNotFound}}</h2>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 mb-5">
 
               <CardComp 
               v-for="movieItem in arrayMovies" :key="movieItem.id"
-              :movie="movieItem"
+              :item="movieItem"
               />
 
             </div>
             <!-- /Movies -->
 
             <!-- Tv Series -->
-            <div class="title-content">Tv Series</div>
+            <div :class="isBlock ? 'd-none' : 'd-inline-block'" class="title-content">Tv Series</div>
+            <!-- Messaggio stampato se la ricerca non produce risultati -->
+            <h2 :class="isSeriesNotFound ? 'd-block' : 'd-none'" class="text-center py-5">{{seriesNotFound}}</h2>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
 
               <CardComp 
               v-for="serieItem in arraySeries" :key="serieItem.id"
-              :serie="serieItem"
+              :item="serieItem"
               />
 
             </div>
@@ -110,8 +113,11 @@ export default {
       initMessage: 'SCEGLI COSA GUARDARE! FAI LA TUA RICERCA!',
       isBlock: true,
 
-      contentNotFound: 'LA TUA RICERCA NON HA PRODOTTO NESSUN RISULTATO...',
-      isNotFound: false
+      moviesNotFound: 'NON CI SONO FILM CON QUESTO NOME...',
+      isMoviesNotFound: false,
+
+      seriesNotFound: 'NON CI SONO SERIE TV CON QUESTO NOME...',
+      isSeriesNotFound: false
     }
   },
 
@@ -122,19 +128,17 @@ export default {
       })
       .then(resp => {
         console.log(resp.data);
-        this.arrayMovies = resp.data.results;
-        this.arraySeries = resp.data.results;
-
-        // type = this.apiParams.media_type;
-
-        this.isLoading = false;
+      
 
         if(type == 'movie'){
-          if(this.arrayMovies.length < 1) this.isNotFound = true;
+          this.arrayMovies = resp.data.results;
+          if(this.arrayMovies.length < 1) this.isMoviesNotFound = true;
         }else if(type == 'tv'){
-          if(this.arraySeries.length < 1) this.isNotFound = true;
+          this.arraySeries = resp.data.results;
+          if(this.arraySeries.length < 1) this.isSeriesNotFound = true;
         }
-        
+
+        this.isLoading = false;
       })
       .catch(error => {
         this.errorMessage = error;
@@ -144,26 +148,18 @@ export default {
     },
 
     contentSearched(inputRicerca){
+
       this.apiParams.query = inputRicerca.toLowerCase();
-      if(inputRicerca.length > 0){
-        
-        this.getApi('movie');
-        // console.log(this.getApi('movie'));
 
-        this.getApi('tv');
-        // console.log(this.getApi('tv'));
+      this.isMoviesNotFound = false;
+      this.getApi('movie');
 
-        this.isBlock = false;
-        this.isLoading = true;
-        console.log( 'sto cercando il contenuto', this.apiParams.query );
-      } 
-      else{
-        this.isBlock = false;
-        this.arrayMovies = [];
-        this.isNotFound = true;
-      } 
+      this.isSeriesNotFound = false;
+      this.getApi('tv');
 
-      
+      this.isBlock = false;
+      this.isLoading = true;
+      console.log( 'sto cercando il contenuto', this.apiParams.query );  
     },
   },
 
@@ -203,7 +199,7 @@ export default {
     overflow-y: scroll;
 
     .title-content{
-    display: inline-block;
+    // display: inline-block;
     text-transform: uppercase;
     color: white;
     background-color: rgba(61, 61, 246, 0.525);

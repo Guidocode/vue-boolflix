@@ -1,12 +1,12 @@
 <template>
 
   <div class="col mb-4">
-    <div class="movie-card my-5 p-2">
-      <div class="title mb-4">Titolo: {{movie.title}}</div>                          <!-- .name -->
-      <div class="original-title">Titolo originale: {{movie.original_title}}</div>   <!-- .original_name -->
-      <div class="language mb-4"><lang-flag :iso="movie.original_language" /></div>   
-      <div class="vote mb-4">Voto: {{movie.vote_average}}</div>
-      <div class="descrizione">Descrizione: {{movie.overview}}</div>
+    <div class="movie-card my-2 p-2">     
+      <div class="title mb-4">Titolo: {{changeTitleName}}</div>  
+      <div class="original-title">Titolo originale: {{changeOriginalTitleName}}</div>
+      <div class="language mb-4"><lang-flag :iso="item.original_language" /></div> 
+      <div class="vote mb-4">Voto: {{item.vote_average}}</div>
+      <div class="descrizione">Descrizione: {{item.overview}}</div>
     </div>
   </div>
 
@@ -23,12 +23,25 @@ export default {
   },
 
   props:{
-    movie: Object,
-    serie: Object
+    item: Object,
   },
 
-  methods:{
-
+  computed:{
+    changeTitleName(){
+      if(this.item.title != undefined){
+        return this.item.title
+      }else{
+        return this.item.name
+      }
+      
+    },
+    changeOriginalTitleName(){
+      if(this.item.original_title != undefined){
+        return this.item.original_title
+      }else{
+        return this.item.original_name
+      }
+    }
   }
 }
 </script>
