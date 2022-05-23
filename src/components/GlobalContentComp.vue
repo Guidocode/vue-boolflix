@@ -120,10 +120,19 @@ export default {
 
     movieSearched(inputRicercaFilm){
       this.apiParams.query = inputRicercaFilm.toLowerCase();
-      this.getApi();
-      this.isBlock = false;
-      this.isLoading = true;
-      console.log( 'sto cercando il film', this.apiParams.query );
+      if(inputRicercaFilm.length > 0){
+        this.getApi();
+        this.isBlock = false;
+        this.isLoading = true;
+        console.log( 'sto cercando il film', this.apiParams.query );
+      } 
+      else{
+        this.isBlock = false;
+        this.arrayMovies = [];
+        this.isNotFound = true;
+      } 
+
+      
     },
   },
 
