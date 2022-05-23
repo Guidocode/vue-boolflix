@@ -8,10 +8,9 @@
 
       <div class="searchbars d-flex flex-wrap flex-md-nowrap">
         <SeachbarComp 
-        @search="movieSearched"
+        @search="contentSearched"
         />
         
-        <!-- Seconda searchbar -->
         
       </div>
 
@@ -36,15 +35,30 @@
         <h2 :class="isNotFound ? 'd-block' : 'd-none'" class="text-center py-5">{{contentNotFound}}</h2>
 
           <div class="container-fluid">
-            <!-- <div class="title-content">Movies</div> -->
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+            <!-- Movies -->
+            <div class="title-content">Movies</div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 mb-5">
 
-              <MoviesComp 
+              <CardComp 
               v-for="movieItem in arrayMovies" :key="movieItem.id"
               :movie="movieItem"
               />
 
             </div>
+            <!-- /Movies -->
+
+            <!-- Tv Series -->
+            <div class="title-content">Tv Series</div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+
+              <CardComp 
+              v-for="serieItem in arraySeries" :key="serieItem.id"
+              :serie="serieItem"
+              />
+
+            </div>
+            <!-- /Tv Series -->
+
           </div>
         </div>
       
@@ -63,15 +77,15 @@
 <script>
 import SeachbarComp from './SeachbarComp.vue';
 import axios from 'axios';
-import MoviesComp from './MoviesComp.vue';
+import CardComp from './CardComp.vue';
 import LoadingComp from './LoadingComp.vue';
 export default {
   name: "GlobalContentComp",
   components: {
     SeachbarComp,
-    MoviesComp,
-    LoadingComp
-  },
+    CardComp,
+    LoadingComp,
+},
 
   mounted(){
     
@@ -79,13 +93,14 @@ export default {
 
   data(){
     return{
-      apiUrl: 'https://api.themoviedb.org/3/search/movie',
+      apiUrl: 'https://api.themoviedb.org/3/search/',
       apiParams: {
         api_key: '331c13478db6d90df46ce36b05f18e36',
         language: 'it-IT',
-        query: ''
+        query: '',
       },
       arrayMovies: [],
+      arraySeries: [],
 
       errorMessage: '',
       isError: false,
@@ -101,15 +116,25 @@ export default {
   },
 
   methods:{
-    getApi(){
-      axios.get(this.apiUrl, {
+    getApi(type){
+      axios.get(this.apiUrl + type, {
         params: this.apiParams
       })
       .then(resp => {
         console.log(resp.data);
         this.arrayMovies = resp.data.results;
+        this.arraySeries = resp.data.results;
+
+        // type = this.apiParams.media_type;
+
         this.isLoading = false;
-        if(this.arrayMovies.length < 1) this.isNotFound = true;
+
+        if(type == 'movie'){
+          if(this.arrayMovies.length < 1) this.isNotFound = true;
+        }else if(type == 'tv'){
+          if(this.arraySeries.length < 1) this.isNotFound = true;
+        }
+        
       })
       .catch(error => {
         this.errorMessage = error;
@@ -118,13 +143,19 @@ export default {
       })
     },
 
-    movieSearched(inputRicercaFilm){
-      this.apiParams.query = inputRicercaFilm.toLowerCase();
-      if(inputRicercaFilm.length > 0){
-        this.getApi();
+    contentSearched(inputRicerca){
+      this.apiParams.query = inputRicerca.toLowerCase();
+      if(inputRicerca.length > 0){
+        
+        this.getApi('movie');
+        // console.log(this.getApi('movie'));
+
+        this.getApi('tv');
+        // console.log(this.getApi('tv'));
+
         this.isBlock = false;
         this.isLoading = true;
-        console.log( 'sto cercando il film', this.apiParams.query );
+        console.log( 'sto cercando il contenuto', this.apiParams.query );
       } 
       else{
         this.isBlock = false;
@@ -178,7 +209,7 @@ export default {
     background-color: rgba(61, 61, 246, 0.525);
     padding: 5px 10px;
     font-weight: 500;
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
     }
 
   }

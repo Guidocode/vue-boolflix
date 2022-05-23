@@ -1,11 +1,11 @@
 <template>
   
   <div class="input-group d-flex flex-wrap">
-    <input v-model.trim="inputRicercaFilm"
-    @keyup.enter="$emit('search', inputRicercaFilm)"
+    <input v-model.trim="inputRicerca"
+    @keyup.enter="$emit('search', inputRicerca)"
     type="text" class="form-control" placeholder="Scrivi il nome del film" aria-label="Recipient's username" aria-describedby="basic-addon2">
     <div class="input-group-append">
-      <button @click="$emit('search', inputRicercaFilm)"
+      <button @click="$emit('search', inputRicerca)"
       class="btn btn-warning" type="button">Cerca</button>
     </div>
 </div>
@@ -18,7 +18,7 @@ export default {
 
  data(){
    return{
-    inputRicercaFilm: ''
+    inputRicerca: ''
    }
  }
 }
