@@ -32,37 +32,32 @@
           <!-- Titolo dei contenuti più popolari -->
           <h4 :class="isBlock ? 'd-inline-block' : 'd-none'" class="title-content">I più visti su Netflix</h4>
 
-          <!-- <div class="container-fluid"> -->
-            <!-- MOVIES -->
-            <div :class="isBlock ? 'd-none' : 'd-inline-block'" class="title-content mb-1">Movies</div>
+          
+          <!-- MOVIES -->
+          <div :class="isBlock ? 'd-none' : 'd-inline-block'" class="title-content mb-1">Movies</div>
+          <!-- Messaggio stampato se la ricerca non produce risultati -->
+          <h2 :class="isMoviesNotFound ? 'd-block' : 'd-none'" class="text-center py-5">{{moviesNotFound}}</h2>
+          <div class="movies mb-5">
+            <CardComp 
+            v-for="movieItem in arrayMovies" :key="movieItem.id"
+            :item="movieItem"
+            />
+          </div>
+          <!-- /MOVIES -->
+
+          <!-- TV SERIES -->
+            <div :class="isBlock ? 'd-none' : 'd-inline-block'" class="title-content mb-1">Tv Series</div>
             <!-- Messaggio stampato se la ricerca non produce risultati -->
-            <h2 :class="isMoviesNotFound ? 'd-block' : 'd-none'" class="text-center py-5">{{moviesNotFound}}</h2>
-            <div class="movies mb-5">
-              <!-- row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 -->
-
+            <h2 :class="isSeriesNotFound ? 'd-block' : 'd-none'" class="text-center py-5">{{seriesNotFound}}</h2>
+            <div class="tv-series">
               <CardComp 
-              v-for="movieItem in arrayMovies" :key="movieItem.id"
-              :item="movieItem"
+              v-for="serieItem in arraySeries" :key="serieItem.id"
+              :item="serieItem"
               />
-
             </div>
-            <!-- /MOVIES -->
+          <!-- /TV SERIES -->
 
-            <!-- TV SERIES -->
-              <div :class="isBlock ? 'd-none' : 'd-inline-block'" class="title-content mb-1">Tv Series</div>
-              <!-- Messaggio stampato se la ricerca non produce risultati -->
-              <h2 :class="isSeriesNotFound ? 'd-block' : 'd-none'" class="text-center py-5">{{seriesNotFound}}</h2>
-              <div class="tv-series">
-                  <!-- row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 -->
-                <CardComp 
-                v-for="serieItem in arraySeries" :key="serieItem.id"
-                :item="serieItem"
-                />
-  
-              </div>
-            <!-- /TV SERIES -->
-
-          <!-- </div> -->
+          
         </div>
       
         <!-- Caricamento mentre avviene la ricerca -->

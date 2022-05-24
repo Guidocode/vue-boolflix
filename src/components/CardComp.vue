@@ -1,50 +1,39 @@
 <template>
 
-  <!-- <div class="col mb-4"> -->
-    <!-- <div class="movie-card my-2 p-2">    
-      <div class="title mb-3">Titolo: {{changeTitleName}}</div>  
-      <div :class="isBlock ? 'd-block' : 'd-none'" class="original-title mb-3">Titolo originale: {{changeOriginalTitleName}}</div>
-      <img class="mb-4" :src="'https://image.tmdb.org/t/p/w200/'+item.backdrop_path" alt=""> 
-      <div class="language mb-1"><lang-flag :iso="item.original_language" /></div> 
+ <!-- LE CARD SCORRONO -->
+  <div class="flip-card flex-shrink-0">
+    <div class="flip-card-inner">
 
-      <star-rating v-model="changeStarVote" class="vote mb-3"
-      v-bind:increment="0.5"
-      v-bind:max-rating="5"
-      inactive-color="#000"
-      active-color="#DB202C"
-      v-bind:star-size="20">
-      </star-rating>
-
-      <div :class="item.overview != '' ? 'd-block' : 'd-none'" class="descrizione">{{item.overview}}</div>
-
-      <img :src="'https://image.tmdb.org/t/p/w342/'+item.poster_path" alt="">
-    </div> -->
-
-    <!-- ANIMAZIONE CARD DA SISTEMARE -->
-    <div class="flip-card flex-shrink-0">
-      <div class="flip-card-inner">
-        <div class="flip-card-front">
-          <img :src="'https://image.tmdb.org/t/p/w342/'+item.poster_path" alt="">
-        </div>
-        <div class="flip-card-back">
-          <div class="title mb-3">Titolo: {{changeTitleName}}</div>  
-          <div :class="isBlock ? 'd-block' : 'd-none'" class="original-title mb-3">Titolo originale: {{changeOriginalTitleName}}</div>
-          <div class="language mb-1"><lang-flag :iso="item.original_language" /></div> 
-
-          <star-rating v-model="changeStarVote" class="vote mb-3"
-          v-bind:increment="0.5"
-          v-bind:max-rating="5"
-          inactive-color="#000"
-          active-color="#DB202C"
-          v-bind:star-size="20">
-          </star-rating>
-
-          <div :class="item.overview != '' ? 'd-block' : 'd-none'" class="descrizione">{{item.overview}}</div>
+      <!-- FRONT -->
+      <div class="flip-card-front">
+        <img v-if="item.poster_path != '' && item.poster_path != null" 
+        :src="'https://image.tmdb.org/t/p/w342/'+item.poster_path" alt="">
+        <div class="text-poster-none d-flex justify-content-center align-items-center" v-else>
+          <h3>{{changeTitleName}}</h3>
         </div>
       </div>
-    </div> 
+      <!-- /FRONT -->
 
-  <!-- </div> -->
+      <!-- BACK -->
+      <div class="flip-card-back">
+        <div class="title mb-3">Titolo: {{changeTitleName}}</div>  
+        <div :class="isBlock ? 'd-block' : 'd-none'" class="original-title mb-3">Titolo originale: {{changeOriginalTitleName}}</div>
+        <div class="language mb-1"><lang-flag :iso="item.original_language" /></div> 
+        <star-rating v-model="changeStarVote" class="vote mb-3"
+        v-bind:increment="0.5"
+        v-bind:max-rating="5"
+        inactive-color="#000"
+        active-color="#DB202C"
+        v-bind:star-size="20">
+        </star-rating>
+        <div :class="item.overview != '' ? 'd-block' : 'd-none'" class="descrizione">{{item.overview}}</div>
+      </div>
+      <!-- /BACK -->
+      
+    </div> 
+  </div>
+
+  
 
 </template>
 
@@ -126,6 +115,7 @@ export default {
 /* This container is needed to position the front and back side */
 .flip-card-inner {
   position: relative;
+  width: 100%;
   height: 100%;
   transition: transform 0.8s;
   transform-style: preserve-3d;
@@ -138,6 +128,8 @@ export default {
 
 /* Position the front and back side */
 .flip-card-front, .flip-card-back {
+  width: 100%;
+  height: 112%;
   position: absolute;
   -webkit-backface-visibility: hidden; /* Safari */
   backface-visibility: hidden;
@@ -146,18 +138,16 @@ export default {
 /* Style the back side */
 .flip-card-back {
   background-color: rgba(97, 95, 95, 0.561);
-  height: 112%;
   padding: 10px;
   transform: rotateY(180deg);
 }
 
-// .movie-card{
-//   background-color: rgba(97, 95, 95, 0.561);
-//   height: 100%;
-//   font-size: .8rem;
-//   transition: all .2s;
-//   cursor: pointer;  
-// }
+
+.text-poster-none{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(97, 95, 95, 0.561);
+}
 
 .title,
 .original-title{
