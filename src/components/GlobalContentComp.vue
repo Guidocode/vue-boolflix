@@ -10,8 +10,6 @@
         <SeachbarComp 
         @search="contentSearched"
         />
-        
-        
       </div>
 
     </div>
@@ -31,14 +29,15 @@
           <!-- Messaggio iniziale 'fai la richerca' -->
           <h2 :class="isBlock ? 'd-block' : 'd-none'" class="text-center py-5">{{initMessage}}</h2>
 
-          
+          <!-- Titolo dei contenuti più popolari -->
+          <h4 :class="isBlock ? 'd-inline-block' : 'd-none'" class="title-content">I più visti su Netflix</h4>
 
           <div class="container-fluid">
-            <!-- Movies -->
+            <!-- MOVIES -->
             <div :class="isBlock ? 'd-none' : 'd-inline-block'" class="title-content">Movies</div>
             <!-- Messaggio stampato se la ricerca non produce risultati -->
             <h2 :class="isMoviesNotFound ? 'd-block' : 'd-none'" class="text-center py-5">{{moviesNotFound}}</h2>
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 mb-5">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 mb-5">
 
               <CardComp 
               v-for="movieItem in arrayMovies" :key="movieItem.id"
@@ -46,13 +45,13 @@
               />
 
             </div>
-            <!-- /Movies -->
+            <!-- /MOVIES -->
 
-            <!-- Tv Series -->
+            <!-- TV SERIES -->
             <div :class="isBlock ? 'd-none' : 'd-inline-block'" class="title-content">Tv Series</div>
             <!-- Messaggio stampato se la ricerca non produce risultati -->
             <h2 :class="isSeriesNotFound ? 'd-block' : 'd-none'" class="text-center py-5">{{seriesNotFound}}</h2>
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
 
               <CardComp 
               v-for="serieItem in arraySeries" :key="serieItem.id"
@@ -60,7 +59,7 @@
               />
 
             </div>
-            <!-- /Tv Series -->
+            <!-- /TV SERIES -->
 
           </div>
         </div>
@@ -91,7 +90,7 @@ export default {
 },
 
   mounted(){
-    
+    this.getApi()
   },
 
   data(){
@@ -122,8 +121,14 @@ export default {
   },
 
   methods:{
-    getApi(type){
-      axios.get(this.apiUrl + type, {
+    getApi(type = ''){
+      let defaultPopular = 'https://api.themoviedb.org/3/movie/popular';
+      if(type !== ''){
+        defaultPopular = this.apiUrl + type;
+      }else{
+        type = 'movie';
+      }
+      axios.get(defaultPopular, {
         params: this.apiParams
       })
       .then(resp => {
@@ -199,13 +204,12 @@ export default {
     overflow-y: scroll;
 
     .title-content{
-    // display: inline-block;
+    display: inline-block;
     text-transform: uppercase;
     color: white;
     background-color: rgba(61, 61, 246, 0.525);
     padding: 5px 10px;
     font-weight: 500;
-    // margin-bottom: 20px;
     }
 
   }
