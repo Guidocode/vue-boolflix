@@ -1,5 +1,48 @@
 <template>
 
+  <!-- <div class="gb-card">
+
+    <flip-flop-card :elevation="8" direction="horizontal" width="300">
+      <template slot="front">
+        <div class="basic-card inner">
+          <img v-if="item.poster_path"
+          class="img-fluid"
+          :src="`https://image.tmdb.org/t/p/w342/${item.poster_path}`" 
+          :alt="changeTitleName">
+          <div v-else 
+          class="placeholder-poster d-flex justify-content-center align-items-center p-3 text-center">
+          {{changeTitleName}}
+          </div>
+        </div>
+      </template>
+      <template slot="back">
+        <div class="basic-card inner p-2">
+
+          <div class="top">
+            <h3>{{changeTitleName}}</h3>
+            <h4>{{changeOriginalTitleName}}</h4>
+          </div>
+          
+          <div class="language mb-1"><lang-flag :iso="item.original_language" /></div> 
+
+          <star-rating v-model="changeStarVote" class="vote mb-3"
+          v-bind:increment="0.5"
+          v-bind:max-rating="5"
+          inactive-color="#000"
+          active-color="#DB202C"
+          v-bind:star-size="20">
+          </star-rating>
+
+          <div :class="item.overview != '' ? 'd-block' : 'd-none'" class="overview">{{item.overview}}</div>
+
+          
+          
+        </div>
+      </template>
+  </flip-flop-card>
+    
+  </div> -->
+
  <!-- LE CARD SCORRONO -->
   <div class="flip-card flex-shrink-0">
     <div class="flip-card-inner">
@@ -7,8 +50,9 @@
       <!-- FRONT -->
       <div class="flip-card-front">
         <img v-if="item.poster_path != '' && item.poster_path != null" 
-        :src="'https://image.tmdb.org/t/p/w342/'+item.poster_path" alt="">
-        <div class="text-poster-none d-flex justify-content-center align-items-center" v-else>
+        :src="'https://image.tmdb.org/t/p/w342/'+item.poster_path" :alt="changeTitleName">
+        <div v-else
+         class="text-poster-none d-flex justify-content-center align-items-center">
           <h3>{{changeTitleName}}</h3>
         </div>
       </div>
@@ -40,6 +84,8 @@
 <script>
 import LangFlag from 'vue-lang-code-flags';
 import StarRating from 'vue-star-rating';
+// import FlipFlopCard from "vue-flip-flop-card";
+
 
 export default {
   name: 'CardComp',
@@ -52,7 +98,8 @@ export default {
 
   components:{
     LangFlag,
-    StarRating
+    StarRating,
+    // FlipFlopCard
   },
 
   props:{
@@ -103,6 +150,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// .gb-card{
+//   // flex-basis: 25%;
+//   background-color: transparent;
+//   margin: 10px;
+//   padding: 10px;
+//   .language{
+//     font-size: 1.5rem;
+//   }
+//   .inner{
+//     height: 100%;
+//     background-color: rgba(97, 95, 95, 0.242);
+//     .top{
+//       min-height: 35%;
+//     }
+//   }
+//   .overview{
+//     height: 50%;
+//     overflow-y: scroll;
+//   }
+//   .placeholder-poster{
+//     height: 100%;
+//     font-size: 1.5rem;
+//   }
+// }
+
+
 .flip-card {
   background-color: transparent;
   width: 342px;

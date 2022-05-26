@@ -4,7 +4,7 @@
     <!-- CONTENT TOP -->
     <div class="content-top d-flex justify-content-between align-items-center flex-wrap px-3">
 
-      <div class="logo">B o o l f l i x</div>
+      <div class="logo"><img class="w-100" :src="require('../assets/img/boolflix-logo.png')" alt=""></div>
 
       <div class="searchbars d-flex flex-wrap flex-md-nowrap">
         <SeachbarComp 
@@ -30,7 +30,7 @@
           <h2 :class="isBlock ? 'd-block' : 'd-none'" class="text-center py-5">{{initMessage}}</h2>
 
           <!-- Titolo dei contenuti più popolari -->
-          <h4 :class="isBlock ? 'd-inline-block' : 'd-none'" class="title-content">I più visti su Netflix</h4>
+          <h4 :class="isBlock ? 'd-inline-block' : 'd-none'" class="title-content">I più visti su Boolflix</h4>
 
           
           <!-- MOVIES -->
@@ -77,6 +77,7 @@ import SeachbarComp from './SeachbarComp.vue';
 import axios from 'axios';
 import CardComp from './CardComp.vue';
 import LoadingComp from './LoadingComp.vue';
+
 export default {
   name: "GlobalContentComp",
   components: {
@@ -178,7 +179,7 @@ export default {
 
   .content-top{
     min-height: 60px;
-    background-image: linear-gradient(#1a2727, #2b3f3f);
+    background-image: linear-gradient(#2b3f3f, #212223);
     position: fixed;
     top: 0;
     left: 0;
@@ -186,10 +187,11 @@ export default {
     z-index: 999;
 
     .logo{
-      color: #DB202C;
-      font-size: 2rem;
-      font-weight: 600;
-      text-transform: uppercase;
+      width: 150px;
+      // color: #DB202C;
+      // font-size: 2rem;
+      // font-weight: 600;
+      // text-transform: uppercase;
     }
   }
 
